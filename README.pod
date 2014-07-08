@@ -1,0 +1,107 @@
+=head1 NAME
+
+FormMaker - Build forms on the fly
+
+=head1 VERSION
+
+FormMaker is a javascript framework to build forms on the fly * work in progress *
+
+=head1 SYNOPSIS
+
+1. define your form with a json. Make plugins as necessary if you customize a field or need some which is not implemented.
+
+
+   var form_definition = {
+        "name" : "Type text <here>",
+        "fields" : [
+            {
+                "id" : "title",
+                "type": "text",
+                "label" : "Title:"
+            },  
+            {
+                "id" : "message",
+                "type": "textarea",
+                "label" : "Message:"
+            },  
+            [
+                //array of fields
+                {
+                    "id" : "send",
+                    "type" : "submit",
+                    "label" : "Submit",
+                    "events" : {
+                        "click": function ( ev ) {
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                            alert( 'Serialize form and make PUT request');
+                            return false;
+                        }   
+                    }   
+                },  
+                {
+                    "id" : "cleanup",
+                    "type" : "submit",
+                    "label" : "Cleanup",
+                    "events" : {
+                        "click": function ( ev ) {
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                            alert( 'cleanup form or re-open url or something');
+                            return false;
+                        }   
+                    }   
+                },  
+            ],  
+            {
+                "type" : "javascript",
+                "script":"$(document).ready( function () {$('#title').click( function () { alert('clicked title') } ) }) ",
+            }   
+        ]   
+    }
+
+
+2. Instanciate FormMaker and generate form
+
+
+    var form_maker          = new FormMaker();
+    var field_input_text    = new FormMakerFieldInputText( form_maker );
+    var field_input_submit  = new FormMakerFieldSubmit( form_maker );
+    var field_javascript    = new FormMakerFieldJavascript( form_maker );
+    var field_textarea      = new FormMakerFieldTextarea( form_maker );
+
+    var form = form_maker.generate_form( form_definition );
+
+
+3. use your form 
+
+
+    $( ".preview .result" ).append( form );
+
+
+
+
+=head1 DESCRIPTION
+
+JS FormMaker allows you to create forms on the fly based on javascript form definitions. With FormMaker you can build html forms using json notation.
+
+This is useful when you must store forms for later reuse.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2014  (evo@mail.com). All rights reserved.
+
+Followed by whatever licence you wish to release it under.
+For Perl code that is often just:
+
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See perldoc perlartistic.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+=cut
+
+
+
