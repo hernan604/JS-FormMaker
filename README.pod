@@ -80,7 +80,9 @@ FormMaker is a javascript framework to build forms on the fly * work in progress
 
 =head2 EXAMPLE
 
-See L<example|https://rawgit.com/hernan604/JS-FormMaker/master/example.htm> . Press some keys in the textarea to update the preview.
+See L<example|https://rawgit.com/hernan604/JS-FormMaker/master/example.htm> . This first example shows a form structure and the form rendered.
+
+The second example demonstrates how to load data into the forms L<example2|https://rawgit.com/hernan604/JS-FormMaker/master/example2.htm>
 
 =head1 DESCRIPTION
 
