@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script type="text/javascript" src="./deps/head.min.js"></script>
+</head>
+<body>
+
+  <form method="POST">
+    
+    <br>
+    <label for="skeleton">Skeleton: (* press a key and get a preview)</label>
+    <textarea placeholder="" type="text" name="skeleton" id="skeleton">
+    {
+    "name" : "Type text <here>",
+    "fields" : [
+        {
+            "id" : "title",
+            "type": "text",
+            "label" : "Title:"
+        },  
+        {
+            "id" : "message",
+            "type": "textarea",
+            "label" : "Message:"
+        },  
+        [
+            //array of fields
+            {
+                "id" : "send",
+                "type" : "submit",
+                "label" : "Submit",
+                "events" : {
+                    "click": function ( ev ) {
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        alert( 'Serialize form and make PUT request');
+                        return false;
+                    }   
+                }   
+            },  
+            {
+                "id" : "cleanup",
+                "type" : "submit",
+                "label" : "Cleanup",
+                "events" : {
+                    "click": function ( ev ) {
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        alert( 'cleanup form or re-open url or something');
+                        return false;
+                    }   
+                }   
+            },  
+        ],  
+        {
+            "type" : "javascript",
+            "script":"$(document).ready( function () {$('#title').click( function () { alert('clicked title') } ) }) ",
+        }   
+    ]   
+
+}
+
+
+    </textarea>
+    
+    <br>
+
+    <div class="preview">
+      <h2>Preview:</h2>
+      <div class="result"></div>
+    </div>
+
+
+    <style>
+
+    .skeleton-preview {
+      border: 1px solid #D00;
+    }
+
+    .skeleton-preview .result {
+      border: 1px solid #033;
+    }
+
+    form {
+        width: 40%;
+        background: #eee;
+        text-align: center;
+    }
+
+    label, input, textarea {
+        width: 90%;
+        margin: 10px 0;
+    }
+
+    input[type='submit'] {
+        width: 100px;
+    }
+
+    textarea {
+        min-height: 300px;
+    }
+
+    .preview {
+        background: #ccc;
+        padding: 15px;
+    }
+
+    .preview form {
+        width: 100%;
+    }
+
+    .preview ul {
+        list-style: none;
+    }
+
+    </style>
+
+  </form>
+
+
+
+  
+
+  <script type="text/javascript">
+    head.load( [ 
+        "./deps/jquery.min.js", 
+        "./lib/FormMaker.js", 
+        "./lib/FormMakerFieldInputText.js", 
+        "./lib/FormMakerFieldSubmit.js", 
+        "./lib/FormMakerFieldJavascript.js", 
+        "./lib/FormMakerFieldTextarea.js"
+      ] , function( ) {
+
+      $(document).ready(function () {
+        var render_error = function ( msg ) {
+          $( ".preview .result" ).prepend( msg )
+        }
+
+        var render_preview = function ( form_definition ) {
+          //cleanup
+          $(".preview .result").html('');
+          try {
+            var form_maker          = new FormMaker();
+            var field_input_text    = new FormMakerFieldInputText( form_maker );
+            var field_input_submit  = new FormMakerFieldSubmit( form_maker );
+            var field_javascript    = new FormMakerFieldJavascript( form_maker );
+            var field_textarea      = new FormMakerFieldTextarea( form_maker );
+
+            var form = form_maker.generate_form( form_definition, { title: "SET THIS TITLE!!", message: "SET THIS MESSAGE!!" } );
+            $( ".preview .result" ).append( form );
+            //return form;
+          } catch ( e ) { render_error( "Error rendering preview: " + e.message ); console.log( e) }
+        }
+
+        //Generate skeleton preview on the fly
+        $( "textarea#skeleton" ).keyup( function ( ev ) {
+          var str_value  = $( ev.currentTarget ).val( );
+          try {
+            render_preview( eval( "(" + str_value + ")") );
+          } catch (e) { render_error( "json error, check your structure and try again<br>"+e.message );  }
+        } )
+
+        try {
+          //render first preview
+          render_preview( eval( "(" + $( "textarea#skeleton" ).val( ) + ")" ) );
+        } catch (e) { render_error( "json error, check your structure and try again<br>"+e.message );  }
+
+      }); 
+    } )
+
+  </script>
+
+</body>
+</html>
