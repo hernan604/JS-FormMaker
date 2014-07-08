@@ -162,6 +162,11 @@
           } catch (e) { render_error( "json error, check your structure and try again<br>"+e.message );  }
         } )
 
+        try {
+          //render first preview
+          render_preview( eval( "(" + str_value + ")") );
+        } catch (e) { render_error( "json error, check your structure and try again<br>"+e.message );  }
+
       }); 
     } )
 
