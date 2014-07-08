@@ -78,8 +78,11 @@ FormMaker is a javascript framework to build forms on the fly * work in progress
 
     $( ".preview .result" ).append( form );
 
+=head2 EXAMPLE
 
+Working example at: 
 
+    https://rawgit.com/hernan604/JS-FormMaker/master/example.htm
 
 =head1 DESCRIPTION
 
