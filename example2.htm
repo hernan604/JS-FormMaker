@@ -148,7 +148,9 @@
             var field_javascript    = new FormMakerFieldJavascript( form_maker );
             var field_textarea      = new FormMakerFieldTextarea( form_maker );
 
-            var form = form_maker.generate_form( form_definition, { title: "SET THIS TITLE!!", message: "SET THIS MESSAGE!!" } );
+            var some_object_from_database = { title: "SET THIS TITLE!!", message: "SET THIS MESSAGE!!" };
+
+            var form = form_maker.generate_form( form_definition, some_object_from_database );
             $( ".preview .result" ).append( form );
             //return form;
           } catch ( e ) { render_error( "Error rendering preview: " + e.message ); console.log( e) }
