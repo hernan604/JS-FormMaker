@@ -164,7 +164,7 @@
 
         try {
           //render first preview
-          render_preview( eval( "(" + str_value + ")") );
+          render_preview( eval( "(" + $( "textarea#skeleton" ).val( ) + ")" ) );
         } catch (e) { render_error( "json error, check your structure and try again<br>"+e.message );  }
 
       }); 
