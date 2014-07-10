@@ -25,6 +25,31 @@
             "type": "textarea",
             "label" : "Message:"
         },  
+        {
+            "id" : "message2",
+            "type": "text",
+            "label" : "Message2:",
+            default_value : "Some default value for this field..."
+        },  
+        {
+            "id" : "message3",
+            "type": "text",
+            "label" : "Message3:",
+            placeholder : "Or a placeholder ..."
+        },  
+        {
+            "id" : "some_options",
+            "type": "select",
+            "label" : "Some Options:",
+            "options" : [
+                { value : 'zero',  text: 'ZERO' },
+                { value : 'one',   text: 'ONE' },
+                { value : 'two',   text: 'TWO' },
+                { value : 'three', text: 'THREE' },
+                { value : 'four',  text: 'FOUR' },
+                { value : 'five',  text: 'FIVE' },
+            ]
+        },  
         [
             //array of fields
             {
@@ -128,6 +153,8 @@
         "./deps/jquery.min.js", 
         "./lib/FormMaker.js", 
         "./lib/FormMakerFieldInputText.js", 
+        "./lib/FormMakerFieldSelect.js", 
+        "./lib/FormMakerFieldInputHidden.js", 
         "./lib/FormMakerFieldSubmit.js", 
         "./lib/FormMakerFieldJavascript.js", 
         "./lib/FormMakerFieldTextarea.js"
@@ -143,10 +170,12 @@
           $(".preview .result").html('');
           try {
             var form_maker          = new FormMaker();
-            var field_input_text    = new FormMakerFieldInputText( form_maker );
-            var field_input_submit  = new FormMakerFieldSubmit( form_maker );
-            var field_javascript    = new FormMakerFieldJavascript( form_maker );
-            var field_textarea      = new FormMakerFieldTextarea( form_maker );
+            new FormMakerFieldInputText( form_maker );
+            new FormMakerFieldSubmit( form_maker );
+            new FormMakerFieldJavascript( form_maker );
+            new FormMakerFieldTextarea( form_maker );
+            new FormMakerFieldInputHidden( form_maker );
+            new FormMakerFieldSelect( form_maker );
 
             var form = form_maker.generate_form( form_definition );
             $( ".preview .result" ).append( form );
