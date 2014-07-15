@@ -16,21 +16,21 @@
     "name" : "Type text <here>",
     "fields" : [
         {
-          id      : "multiple_01",
-          type    : "multiple",
-          label   : "Fotos",
-          fields  : [
-              {
-                  "id"    : "title",
-                  "type"  : "text",
-                  "label" : "Title (multi):"
-              },  
-              {
-                  "id"    : "url_photo",
-                  "type"  : "text",
-                  "label" : "Url Photo (multi):"
-              },  
-          ]
+            id      : "multiple_01",
+            type    : "multiple",
+            label   : "Fotos",
+            fields  : [
+                {
+                    "id"    : "title",
+                    "type"  : "text",
+                    "label" : "Title (multi):"
+                },  
+                {
+                    "id"    : "url_photo",
+                    "type"  : "text",
+                    "label" : "Url Photo (multi):"
+                },  
+            ]
         },
         {
             "id"    : "title",
@@ -45,10 +45,10 @@
         [
             //array of fields
             {
-                "id" : "send",
-                "type" : "submit",
-                "label" : "Submit",
-                "events" : {
+                "id"      : "send",
+                "type"    : "submit",
+                "label"   : "Submit",
+                "events"  : {
                     "click": function ( ev ) {
                         ev.stopPropagation();
                         ev.preventDefault();
