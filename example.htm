@@ -16,6 +16,23 @@
     "name" : "Type text <here>",
     "fields" : [
         {
+          id      : "multiple_01",
+          type    : "multiple",
+          label   : "Fotos",
+          fields  : [
+              {
+                  "id" : "title",
+                  "type": "text",
+                  "label" : "Title (multi):"
+              },  
+              {
+                  "id" : "url_photo",
+                  "type": "text",
+                  "label" : "Url Photo (multi):"
+              },  
+          ]
+        },
+        {
             "id" : "title",
             "type": "text",
             "label" : "Title:"
@@ -140,6 +157,29 @@
         list-style: none;
     }
 
+
+    .container-multiple #field-list {
+        width: 70%;
+        margin: 0;
+        padding: 0;
+    }
+    .container-multiple .div_multi > * {
+        display: inline-block;
+    }
+    .container-multiple .action {
+        width: 25%;
+        vertical-align: top;
+        margin-top: 15px;
+    }
+    .container-multiple .div_multi {
+        display: inline;
+    }
+    .container-multiple > label {
+        width: 100%;
+        font-weight: bolder;
+        float: left;
+    }
+
     </style>
 
   </form>
@@ -157,7 +197,8 @@
         "./lib/FormMakerFieldInputHidden.js", 
         "./lib/FormMakerFieldSubmit.js", 
         "./lib/FormMakerFieldJavascript.js", 
-        "./lib/FormMakerFieldTextarea.js"
+        "./lib/FormMakerFieldTextarea.js",
+        "./lib/FormMakerFieldMultiple.js"
       ] , function( ) {
 
       $(document).ready(function () {
@@ -176,6 +217,7 @@
             new FormMakerFieldTextarea( form_maker );
             new FormMakerFieldInputHidden( form_maker );
             new FormMakerFieldSelect( form_maker );
+            new FormMakerFieldMultiple( form_maker );
 
             var form = form_maker.generate_form( form_definition );
             $( ".preview .result" ).append( form );

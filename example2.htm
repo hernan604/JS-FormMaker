@@ -16,13 +16,30 @@
     "name" : "Type text <here>",
     "fields" : [
         {
-            "id" : "title",
-            "type": "text",
+          id      : "multiple_01",
+          type    : "multiple",
+          label   : "Fotos",
+          fields  : [
+              {
+                  "id"    : "title",
+                  "type"  : "text",
+                  "label" : "Title (multi):"
+              },  
+              {
+                  "id"    : "url_photo",
+                  "type"  : "text",
+                  "label" : "Url Photo (multi):"
+              },  
+          ]
+        },
+        {
+            "id"    : "title",
+            "type"  : "text",
             "label" : "Title:"
         },  
         {
-            "id" : "message",
-            "type": "textarea",
+            "id"    : "message",
+            "type"  : "textarea",
             "label" : "Message:"
         },  
         [
@@ -36,15 +53,42 @@
                         ev.stopPropagation();
                         ev.preventDefault();
                         alert( 'Serialize form and make PUT request');
+                        var serialize_node = function ( node ) {
+                            var obj = {};
+                            for ( var i = 0; i < node.find('>.fieldlist>#field-list>li').length; i++ ) {
+                                var item = $( node.find('>.fieldlist>#field-list>li').get(i) );
+                                if ( item.find('>.container-multiple').length ) {
+                                    var container    = item.find('>.container-multiple');
+                                    var obj_multiple = [];
+                                    for ( var x = 0; x < container.find( '>.div_multi' ).length ; x++ ) {
+                                        var child = $( container.find( '>.div_multi' ).get(x) );
+                                        obj_multiple.push( serialize_node( child ) );
+                                    }
+                                    obj[ container.attr('id') ] = obj_multiple;
+                                } else {
+                                    var field;
+                                    if ( item.find( "input" ).length == 1 ) {
+                                        field = item.find( "input" );
+                                        obj[field.attr('id')]= field.val();
+                                    } else if ( item.find( 'textarea' ).length ) {
+                                        field = item.find( 'textarea' );
+                                        obj[field.attr('id')]= field.val();
+                                    }
+                                }
+                            }
+                            return obj;
+                        }
+                        var serializado = serialize_node( $( ev.currentTarget ).closest('form') );
+                        $( ".form-serialized" ).append( JSON.stringify( serializado ) );
                         return false;
                     }   
                 }   
             },  
             {
-                "id" : "cleanup",
-                "type" : "submit",
-                "label" : "Cleanup",
-                "events" : {
+                "id"      : "cleanup",
+                "type"    : "submit",
+                "label"   : "Cleanup",
+                "events"  : {
                     "click": function ( ev ) {
                         ev.stopPropagation();
                         ev.preventDefault();
@@ -70,6 +114,7 @@
     <div class="preview">
       <h2>Preview:</h2>
       <div class="result"></div>
+      <div class="form-serialized"></div>
     </div>
 
 
@@ -113,6 +158,24 @@
 
     .preview ul {
         list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .preview ul#field-list li,
+    .preview ul#field-list li .container-multiple,
+    .preview ul#field-list li .container-multiple .div_multi {
+        width: 100%;
+    }
+
+    .preview ul#field-list li .container-multiple .div_multi .fieldlist {
+        width: 80%;
+        display: inline-block;
+    }
+    .preview ul#field-list li .container-multiple .div_multi .action {
+        width: 10%;
+        display: inline-block;
+        vertical-align: top;
     }
 
     </style>
@@ -128,9 +191,12 @@
         "./deps/jquery.min.js", 
         "./lib/FormMaker.js", 
         "./lib/FormMakerFieldInputText.js", 
+        "./lib/FormMakerFieldSelect.js", 
+        "./lib/FormMakerFieldInputHidden.js", 
         "./lib/FormMakerFieldSubmit.js", 
         "./lib/FormMakerFieldJavascript.js", 
-        "./lib/FormMakerFieldTextarea.js"
+        "./lib/FormMakerFieldTextarea.js",
+        "./lib/FormMakerFieldMultiple.js"
       ] , function( ) {
 
       $(document).ready(function () {
@@ -142,13 +208,29 @@
           //cleanup
           $(".preview .result").html('');
           try {
-            var form_maker          = new FormMaker();
-            var field_input_text    = new FormMakerFieldInputText( form_maker );
-            var field_input_submit  = new FormMakerFieldSubmit( form_maker );
-            var field_javascript    = new FormMakerFieldJavascript( form_maker );
-            var field_textarea      = new FormMakerFieldTextarea( form_maker );
+            var form_maker = new FormMaker();
+            new FormMakerFieldInputText( form_maker );
+            new FormMakerFieldSubmit( form_maker );
+            new FormMakerFieldJavascript( form_maker );
+            new FormMakerFieldTextarea( form_maker );
+            new FormMakerFieldInputHidden( form_maker );
+            new FormMakerFieldSelect( form_maker );
+            new FormMakerFieldMultiple( form_maker );
 
-            var some_object_from_database = { title: "SET THIS TITLE!!", message: "SET THIS MESSAGE!!" };
+            var some_object_from_database = { 
+                title       : "SET THIS TITLE!!", 
+                message     : "SET THIS MESSAGE!!",
+                multiple_01 : [
+                    {
+                      title     : "titulo1",
+                      url_photo : "títuloooo1"
+                    },
+                    {
+                      title     : "titulo2",
+                      url_photo : "títuloooo2"
+                    },
+                ]
+            };
 
             var form = form_maker.generate_form( form_definition, some_object_from_database );
             $( ".preview .result" ).append( form );
